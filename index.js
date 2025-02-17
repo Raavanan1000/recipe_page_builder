@@ -17,7 +17,51 @@ fs.readFile(recipePath, 'utf8', (err, data) => {
 
   // Build HTML content
   let recipeHTML = `
-    <h1>TEST</h1>
+    <div class="container mt-5 mb-5">
+        <h2 class="mt-4">Temps</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Total :</strong> ${recipe.timing.total.quantity} ${recipe.timing.total.unit}</p>
+                <p><strong>Préparation :</strong> ${recipe.timing.preparation.quantity} ${recipe.timing.preparation.unit}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Repos :</strong> ${recipe.timing.rest.quantity} ${recipe.timing.rest.unit}</p>
+                <p><strong>Cuisson :</strong> ${recipe.timing.cooking.quantity} ${recipe.timing.cooking.unit}</p>
+            </div>
+        </div>
+
+        <h2 class="mt-4 mb-3">Ingrédients</h2>
+        <div class="row mb-4">
+        ${recipe.ingredients.map(ingredient => `
+            <div class="col-6 col-sm-4 col-md-3 mb-3">
+                <div class="card" style="height: 220px;">
+                    <img src="pictures/${ingredient.picture}" class="card-img-top" alt="${ingredient.translated_name[0].fr}" style="height: 120px; object-fit: contain;">
+                    <div class="card-body p-2">
+                        <h5 class="card-title fs-6">${ingredient.translated_name[0].fr}</h5>
+                        <p class="card-text fs-7">${ingredient.quantity} ${ingredient.unit}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('')}
+        </div>
+
+        <h2 class="mt-4 mb-3">Étapes</h2>
+        <ol class="list-group mb-4">
+            ${recipe.steps.map(step => {
+            const stepIngredients = step.ingredients.map(index => {
+                const ingredient = recipe.ingredients[index - 1];
+                return `${ingredient.translated_name[0].fr} (${ingredient.quantity} ${ingredient.unit})`;
+            }).join(', ');
+
+            return `
+                <li class="list-group-item step-item">
+                <h3 class="step-title">Étape ${step.order}:</h3>
+                <p class="step-description">${step.description}</p>
+                ${stepIngredients ? `<p><strong>Ingrédients utilisés:</strong> ${stepIngredients}</p>` : ''}
+                </li>`;
+            }).join('')}
+        </ol>
+    </div>
   `;
 
   // Read the HTML template
