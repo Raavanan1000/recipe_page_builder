@@ -1,0 +1,13 @@
+{
+  "name": "candidate",
+  "version": "1.0.0",
+  "description": "Create a program that reads the file recipe.json, transform it to HTML and insert it into the html file (replace the keyword : REPLACEME)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
